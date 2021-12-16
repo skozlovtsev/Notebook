@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Notebook
@@ -12,18 +12,33 @@ namespace Notebook
             bool triger = true;
             while (triger)
             {
+                Console.WriteLine("####################################\n" +
+                                  "# 1 - создать         2 - удалить  #\n" +
+                                  "# 3 - редактировать   4 - просмотр #\n" +
+                                  "# 5 - подробнее       6 - выход    #\n" +
+                                  "####################################\n");
+                Console.Write(">>>");
                 switch (Console.ReadLine())
                 {
-                    case "создать":
+                    case "1":
                         Console.Clear();
                         string phoneNumber;
                         while (true)
                         {
                             Console.Write("Введите номер телефона: ");
                             phoneNumber = Console.ReadLine();
-                            if ((Validator.IsPhoneNumberValid(phoneNumber)) && (notebook.CheckPhone(phoneNumber)))
+                            if (Validator.IsPhoneNumberValid(phoneNumber))
                             {
-                                break;
+                                if (notebook.CheckPhone(phoneNumber))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.BackgroundColor = ConsoleColor.Red;
+                                    Console.WriteLine($"номер {phoneNumber} занят");
+                                    Console.ResetColor();
+                                }
                             }
                             else
                             {
@@ -69,30 +84,25 @@ namespace Notebook
                         firstName = null;
                         GC.Collect();
                         break;
-                    case "удалить":
+                    case "2":
                         Console.Write("Введите номер телефона или имя и фамилию: ");
                         notebook.Del(Console.ReadLine());
                         break;
-                    case "редактировать":
+                    case "3":
                         Console.Clear();
                         Console.Write("Введите номер телефона или имя и фамилию: ");
                         notebook.Edit(Console.ReadLine());
                         break;
-                    case "просмотр":
+                    case "4":
                         Console.Clear();
                         notebook.ShowNotes();
                         break;
-                    case "подробнее":
+                    case "5":
                         Console.Clear();
                         Console.Write("Введите номер телефона или имя и фамилию: ");
                         notebook.ShowNote(Console.ReadLine());
                         break;
-                    case "help":
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("'создать', 'удалить', 'редактировать', 'просмотр', 'подробнее', 'редактировать', 'выход'");
-                        Console.ResetColor();
-                        break;
-                    case "выход":
+                    case "6":
                         triger = false;
                         break;
                     default:
@@ -229,7 +239,7 @@ namespace Notebook
             Console.Clear();
             foreach (Note note in notes)
             {
-                Console.WriteLine($"{note.phoneNumber}     {note.secondName} {note.firstName}");
+                Console.WriteLine($"{note.phoneNumber}  #  {note.secondName} {note.firstName}");
                 Console.WriteLine("");
             }
         }
@@ -244,10 +254,6 @@ namespace Notebook
                 }
             }
             return -1;
-        }
-        private void CheckEdit()
-        {
-
         }
     }
 
